@@ -165,18 +165,9 @@ func (a analytics) Dashboard(w http.ResponseWriter, r *http.Request) {
 }
 
 type dashData struct {
-	Title        string
-	Content      string
-	CanonicalURL string
-	FootingQuote string
 	SessionCount int
 	Date         string
 	URLHits      map[string]map[string]int
-}
-
-type fileData struct {
-	Date    string
-	Entries map[string][]action
 }
 
 type action struct {
