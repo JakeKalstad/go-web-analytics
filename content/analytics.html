@@ -1,0 +1,88 @@
+{{ define "layout" }}
+<!DOCTYPE html>
+<html lang="en">
+    <head></head>
+    <body>
+        <style type="text/css">
+            .tg  {border-collapse:collapse;border-spacing:0;}
+            .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px; overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px; font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg .tg-0lax{text-align:left;vertical-align:top}
+        </style>
+        <script>
+           function UpdateQueryString(key, value, url) {
+                if (!url) url = window.location.href;
+                var re = new RegExp("([?&])" + key + "=.*?(&|#|$)(.*)", "gi"),
+                    hash;
+
+                if (re.test(url)) {
+                    if (typeof value !== 'undefined' && value !== null) {
+                        return url.replace(re, '$1' + key + "=" + value + '$2$3');
+                    } 
+                    else {
+                        hash = url.split('#');
+                        url = hash[0].replace(re, '$1$3').replace(/(&|\?)$/, '');
+                        if (typeof hash[1] !== 'undefined' && hash[1] !== null) {
+                            url += '#' + hash[1];
+                        }
+                        return url;
+                    }
+                }
+                else {
+                    if (typeof value !== 'undefined' && value !== null) {
+                        var separator = url.indexOf('?') !== -1 ? '&' : '?';
+                        hash = url.split('#');
+                        url = hash[0] + separator + key + '=' + value;
+                        if (typeof hash[1] !== 'undefined' && hash[1] !== null) {
+                            url += '#' + hash[1];
+                        }
+                        return url;
+                    }
+                    else {
+                        return url;
+                    }
+                }
+            }
+
+            function chooseDate(object) {
+               window.location.href = UpdateQueryString("date", object.value, window.location.href)
+            }
+        </script>
+        <section id="about">
+            <div class="container-fluid align-self-center">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-12 text-center align-self-center">
+                        <h1>{{.Date}}</h1>
+                        <input type="date" id="date" value="{{.Date}}" onchange="chooseDate(this)">
+                        <h2>Unique Sessions Today: {{.SessionCount}}</h2>
+                        <h3>Page Views</h3>
+                        {{range $Category, $URLS := .URLHits}}
+                            <h5> /{{$Category}}</h5>
+                            <table class="tg" style="undefined;table-layout: fixed; width: 320px">
+                                <colgroup>
+                                    <col style="width: 70px">
+                                    <col style="width: 250px">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="tg-0lax">Page Views</th>
+                                        <th class="tg-0lax">URL</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {{range $URL, $count := $URLS}}
+                                    <tr>
+                                            <td class="tg-0lax">{{$count}} </td>
+                                            <td class="tg-0lax">{{$URL}}</td>
+                                    </tr>
+                                {{end}}
+                                </tbody>
+                            </table>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
+{{ end }}
