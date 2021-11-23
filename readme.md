@@ -4,6 +4,8 @@ A minimal analytics package to start collecting traffic data without client depe
 
 # Logging incoming requests
 
+    import "github.com/JakeKalstad/go-web-analytics"
+
     analytics := NewAnalytics(AnalyticsConfiguration{
     			Name:                 "sanjuanpuertorico",
     			Password:             os.Getenv("DASHBOARD_KEY"),
